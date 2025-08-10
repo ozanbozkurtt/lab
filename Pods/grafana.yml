@@ -1,0 +1,28 @@
+# kubectl run grafana-pod --image=grafana/grafana:10.2.0 --port=3000 --restart=Always --dry-run=client -o yaml > Pods/grafana.yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grafana-pod
+  labels:
+    app: grafana
+    tier: monitoring
+spec:
+  containers:
+  - name: grafana
+    image: grafana/grafana:10.2.0
+    ports:
+    - containerPort: 3000
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+      limits:
+        memory: "256Mi"
+        cpu: "200m"
+    env:
+    - name: GF_SECURITY_ADMIN_PASSWORD
+      value: "admin123"
+    - name: GF_USERS_ALLOW_SIGN_UP
+      value: "false"
+    - name: GF_INSTALL_PLUGINS
+      value: "grafana-piechart-panel,grafana-worldmap-panel"

@@ -1,0 +1,21 @@
+# kubectl run nginx-pod --image=nginx:latest --port=80 --restart=Always --dry-run=client -o yaml > Pods/nginx.yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+    resources: {}
+    dnsPolicy: ClusterFirst
+    restartPolicy: Always
+# Eğer pod master node'da çalışmasını istiyorsan, aşağıdaki tolerations ve nodeSelector ekle:
+# tolerations:
+# - key: node-role.kubernetes.io/master
+#   operator: Exists
+#   effect: NoSchedule
+# nodeSelector:
+#   node-role.kubernetes.io/master: ""

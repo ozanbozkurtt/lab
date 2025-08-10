@@ -1,0 +1,31 @@
+# kubectl run elasticsearch-pod --image=elasticsearch:8.11.0 --port=9200 --restart=Always --dry-run=client -o yaml > Pods/elasticsearch.yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: elasticsearch-pod
+  labels:
+    app: elasticsearch
+    tier: search
+spec:
+  containers:
+  - name: elasticsearch
+    image: elasticsearch:8.11.0
+    ports:
+    - containerPort: 9200
+      name: http
+    - containerPort: 9300
+      name: transport
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "250m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
+    env:
+    - name: discovery.type
+      value: "single-node"
+    - name: xpack.security.enabled
+      value: "false"
+    - name: "ES_JAVA_OPTS"
+      value: "-Xms512m -Xmx512m"
